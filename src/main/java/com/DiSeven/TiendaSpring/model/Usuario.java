@@ -1,6 +1,9 @@
 package com.DiSeven.TiendaSpring.model;
 
 import jakarta.persistence.*;
+import org.w3c.dom.Text;
+
+import java.util.Base64;
 
 @Entity
 @Table(name = "Usuarios")
@@ -9,33 +12,32 @@ public class Usuario {
     @Id
     @Column(name = "Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
+    @Column(name = "Email")
     private String email;
 
+    @Column(name = "Contraseña")
     private String contraseña;
 
+    @Column(name = "verificado")
     private boolean verificado;
 
-    private boolean esAdmin;
+    @Column(name = "esAdmin")
+    private boolean esAdmin = false;
 
     public Usuario() {
     }
 
-    public Usuario(int id, String email, String contraseña, boolean verificado, boolean esAdmin) {
-        this.id = id;
+    public Usuario(String email, String contraseña, boolean verificado, boolean esAdmin) {
         this.email = email;
         this.contraseña = contraseña;
         this.verificado = verificado;
         this.esAdmin = esAdmin;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getEmail() {
@@ -51,7 +53,7 @@ public class Usuario {
     }
 
     public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+        this.contraseña = Base64.getEncoder().encodeToString(contraseña.getBytes());
     }
 
     public boolean isVerificado() {

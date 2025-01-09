@@ -1,6 +1,9 @@
 package com.DiSeven.TiendaSpring.model;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -10,13 +13,13 @@ public class Compra {
     @Id
     @Column(name = "Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "IdUsuario")
-    private int idUsuario;
+    private Long idUsuario;
 
     @Column(name = "Fecha")
-    private Date fecha;
+    private LocalDateTime fecha;
 
     @Column(name = "Productos")
     private String productos;
@@ -37,9 +40,8 @@ public class Compra {
 
     }
 
-    public Compra(int id, int idUsuario, Date fecha, String productos, double total, Estado estado, MetodosPago metodoPago,
+    public Compra(Long idUsuario, LocalDateTime fecha, String productos, double total, Estado estado, MetodosPago metodoPago,
                   String datosPago) {
-        this.id = id;
         this.idUsuario = idUsuario;
         this.fecha = fecha;
         this.productos = productos;
@@ -49,27 +51,23 @@ public class Compra {
         this.datosPago = datosPago;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    public Date getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 
