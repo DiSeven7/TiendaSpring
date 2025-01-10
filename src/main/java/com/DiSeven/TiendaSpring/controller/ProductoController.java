@@ -2,13 +2,16 @@ package com.DiSeven.TiendaSpring.controller;
 
 import com.DiSeven.TiendaSpring.model.Producto;
 import com.DiSeven.TiendaSpring.repository.ProductoRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("Productos")
+@Tag(name = "Productos", description = "Productos disponibles")
 public class ProductoController {
 
     private ProductoRepository productoRepository;
@@ -18,9 +21,14 @@ public class ProductoController {
     }
 
     @PostMapping("/postProducto")
-    public ResponseEntity<String> postProducto(@RequestBody Producto producto) {
-        productoRepository.save(producto);
-        return new ResponseEntity<>("Producto añadido", HttpStatus.OK);
+    public ResponseEntity<String> postProducto(@RequestBody @NotNull Producto producto) {
+        if (producto != null) {
+            productoRepository.save(producto);
+            return new ResponseEntity<>("Producto añadido", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>("Error. Debe enviarse un producto que almacenar", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/getProductos")
@@ -38,12 +46,16 @@ public class ProductoController {
     }
 
     @PutMapping("/putProducto")
-    public ResponseEntity<String> putProducto(@RequestBody Producto producto) {
-        if (productoRepository.existsById(producto.getId())) {
-            productoRepository.save(producto);
-            return new ResponseEntity<>("Producto actualizado correctamente", HttpStatus.OK);
+    public ResponseEntity<String> putProducto(@RequestBody @NotNull Producto producto) {
+        if (producto != null) {
+            if (productoRepository.existsById(producto.getId())) {
+                productoRepository.save(producto);
+                return new ResponseEntity<>("Producto actualizado correctamente", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("El id indicado no existe", HttpStatus.NOT_FOUND);
+            }
         } else {
-            return new ResponseEntity<>("El id indicado no existe", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Error. Debe enviarse un producto que actualizar", HttpStatus.BAD_REQUEST);
         }
     }
 

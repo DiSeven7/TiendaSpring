@@ -2,13 +2,11 @@ package com.DiSeven.TiendaSpring.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
-@Table(name = "Compras")
-public class Compra {
+@Table(name = "pedidos")
+public class Pedido {
 
     @Id
     @Column(name = "Id")
@@ -18,34 +16,28 @@ public class Compra {
     @Column(name = "IdUsuario")
     private Long idUsuario;
 
+    @Column(name = "Referencia")
+    private String referencia;
+
     @Column(name = "Fecha")
     private LocalDateTime fecha;
-
-    @Column(name = "Productos")
-    private String productos;
-
-    @Column(name = "Total")
-    private double total;
 
     @Column(name = "Estado")
     private Estado estado;
 
-    @Column(name="MetodoPago")
+    @Column(name = "MetodoPago")
     private MetodosPago metodoPago;
 
     @Column(name = "DatosPago")
     private String datosPago;
 
-    public Compra(){
-
+    public Pedido() {
     }
 
-    public Compra(Long idUsuario, LocalDateTime fecha, String productos, double total, Estado estado, MetodosPago metodoPago,
-                  String datosPago) {
+    public Pedido(Long idUsuario, String referencia, LocalDateTime fecha, Estado estado, MetodosPago metodoPago, String datosPago) {
         this.idUsuario = idUsuario;
+        this.referencia = referencia;
         this.fecha = fecha;
-        this.productos = productos;
-        this.total = total;
         this.estado = estado;
         this.metodoPago = metodoPago;
         this.datosPago = datosPago;
@@ -63,28 +55,20 @@ public class Compra {
         this.idUsuario = idUsuario;
     }
 
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
+    }
+
     public LocalDateTime getFecha() {
         return fecha;
     }
 
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
-    }
-
-    public String getProductos() {
-        return productos;
-    }
-
-    public void setProductos(String productos) {
-        this.productos = productos;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
     }
 
     public Estado getEstado() {

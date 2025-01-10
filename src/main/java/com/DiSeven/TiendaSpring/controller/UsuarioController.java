@@ -2,13 +2,16 @@ package com.DiSeven.TiendaSpring.controller;
 
 import com.DiSeven.TiendaSpring.model.Usuario;
 import com.DiSeven.TiendaSpring.repository.UsuarioRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("Usuarios")
+@Tag(name = "Usuarios", description = "Usuarios registrados")
 public class UsuarioController {
 
     private UsuarioRepository usuarioRepository;
@@ -18,9 +21,14 @@ public class UsuarioController {
     }
 
     @PostMapping("/postUsuario")
-    public ResponseEntity<String> postUsuario(@RequestBody  Usuario usuario) {
-        usuarioRepository.save(usuario);
-        return new ResponseEntity<>("Usuario creado", HttpStatus.OK);
+    public ResponseEntity<String> postUsuario(@RequestBody @NotNull Usuario usuario) {
+        if (usuario != null) {
+            usuarioRepository.save(usuario);
+            return new ResponseEntity<>("Usuario creado", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>("Error. Debe enviarse un usuario que almacenar", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/getUsuarios")
@@ -38,12 +46,17 @@ public class UsuarioController {
     }
 
     @PutMapping("/putUsuario")
-    public ResponseEntity<String> putUsuario(@RequestBody Usuario usuario) {
-        if (usuarioRepository.existsById(usuario.getId())) {
-            usuarioRepository.save(usuario);
-            return new ResponseEntity<>("Usuario actualizado", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("El usuario no existe", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> putUsuario(@RequestBody @NotNull Usuario usuario) {
+        if(usuario!=null) {
+            if (usuarioRepository.existsById(usuario.getId())) {
+                usuarioRepository.save(usuario);
+                return new ResponseEntity<>("Usuario actualizado", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("El usuario no existe", HttpStatus.NOT_FOUND);
+            }
+        }
+        else {
+            return new ResponseEntity<>("Error. Debe enviarse un usuario que actualizar", HttpStatus.BAD_REQUEST);
         }
     }
 
